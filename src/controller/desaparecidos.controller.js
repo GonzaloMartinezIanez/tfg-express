@@ -1,8 +1,8 @@
-import { getConnection } from "./../db/database";
-import { upload } from "./../middleware/multer"
+import { getConnection } from "../db/database";
+import { upload } from "../middleware/multer"
 
-const getInteraccion = async (req, res) => {
-    try {
+const getDesaparecidos = async (req, res) => {
+    /* try {
         const connection = await getConnection();
         const result = await connection.query("SELECT * FROM interacciones");
 
@@ -10,11 +10,11 @@ const getInteraccion = async (req, res) => {
     } catch (error) {
         res.status(500);
         res.send(error.message);
-    }
+    } */
 }
 
-const getInteraccionId = async (req, res) => {
-    try {
+const getDesaparecidosId = async (req, res) => {
+    /* try {
         const { id } = req.params;
         const connection = await getConnection();
         const result = await connection.query("SELECT * FROM interacciones WHERE IdInteraccion = ?", id);
@@ -23,11 +23,11 @@ const getInteraccionId = async (req, res) => {
     } catch (error) {
         res.status(500);
         res.send(error.message);
-    }
+    } */
 }
 
-const getInteraccionPorCampo = async (req, res) => {
-    try {
+const getDesaparecidosPorCampo = async (req, res) => {
+    /* try {
         const { campo, valor } = req.params;
 
         if (campo === undefined || valor === undefined) {
@@ -41,11 +41,11 @@ const getInteraccionPorCampo = async (req, res) => {
     } catch (error) {
         res.status(500);
         res.send(error.message);
-    }
+    } */
 }
 
-const addInteraccion = async (req, res) => {
-    try {
+const addDesaparecidos = async (req, res) => {
+    /* try {
         const { Nombre, ApellidoPaterno, ApellidoMaterno, NombreSocial, FechaNacimiento, Sexo, Nacionalidad, Estado, Municipio, LugarFrecuenta, LugarActual, SituacionCalle, MigrantesMexicanas, TrabajadorCampo, DesplazadasForzadasInternas, MigrantesExtranjeras, Deportadas, TrabajadorHogar, DescripcionFisica, Necesidades, MensajeFamiliares, Imagen, SaludFisica, SaludMental, Observaciones, Folio, IdGrupo } = req.body;
         const imangenFile = req.file;
 
@@ -73,11 +73,11 @@ const addInteraccion = async (req, res) => {
     } catch (error) {
         res.status(500);
         res.send(error.message);
-    }
+    } */
 }
 
-const deleteInteraccionId = async (req, res) => {
-    try {
+const deleteDesaparecidosId = async (req, res) => {
+    /* try {
         const { id } = req.params;
         const connection = await getConnection();
         const result = await connection.query("DELETE FROM interacciones WHERE IdInteraccion = ?", id);
@@ -86,11 +86,11 @@ const deleteInteraccionId = async (req, res) => {
     } catch (error) {
         res.status(500);
         res.send(error.message);
-    }
+    } */
 }
 
-const updateInteraccionId = async (req, res) => {
-    try {
+const updateDesaparecidosId = async (req, res) => {
+    /* try {
         const { id } = req.params;
         const { Nombre, ApellidoPaterno, ApellidoMaterno, NombreSocial, FechaNacimiento, Sexo, Nacionalidad, Estado, Municipio, LugarFrecuenta, LugarActual, SituacionCalle, MigrantesMexicanas, TrabajadorCampo, DeplazadasForzadasInternas, MigrantesExtranjeras, Deportadas, TrabajadorHogar, DescripcionFisica, Necesidades, MensajeFamiliares, Imagen, SaludFisica, SaludMental, Observaciones, Folio } = req.body;
 
@@ -109,15 +109,15 @@ const updateInteraccionId = async (req, res) => {
     } catch (error) {
         res.status(500);
         res.send(error.message);
-    }
+    } */
 }
 
 
 export const methods = {
-    getInteraccion,
-    getInteraccionId,
-    getInteraccionPorCampo,
-    addInteraccion,
-    deleteInteraccionId,
-    updateInteraccionId
+    getDesaparecidos,
+    getDesaparecidosId,
+    getDesaparecidosPorCampo,
+    addDesaparecidos,
+    deleteDesaparecidosId,
+    updateDesaparecidosId
 }
