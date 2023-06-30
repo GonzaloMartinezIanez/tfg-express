@@ -24,6 +24,19 @@ const getGrupoId = async (req, res) => {
     }
 }
 
+const getGrupoInteraccionId = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const connection = await getConnection();
+        const result = await connection.query("SELECT NombreGrupo from personasengrupos p, grupos g WHERE p.IdGrupo = g.IdGrupo AND p.IdInteraccion = ?", id);
+
+        res.json(result);
+    } catch (error) {
+        res.status(500);
+        res.send(error.message);
+    }
+}
+
 const getGrupoCorto = async (req, res) => {
     try {
         const connection = await getConnection();
@@ -36,6 +49,18 @@ const getGrupoCorto = async (req, res) => {
     }
 }
 
+const getPersonasEnGrupo = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const connection = await getConnection();
+        const result = await connection.query("SELECT Nombre, ApellidoPaterno, ApellidoMaterno FROM interacciones i, personasengrupos p WHERE i.IdInteraccion = p.IdInteraccion AND p.IdGrupo = ?", id);
+
+        res.json(result);
+    } catch (error) {
+        res.status(500);
+        res.send(error.message);
+    }
+}
 
 const addGrupo = async (req, res) => {
     try {
@@ -64,6 +89,8 @@ const addGrupo = async (req, res) => {
 export const methods = {
     getGrupo,
     getGrupoId,
+    getGrupoInteraccionId,
     getGrupoCorto,
+    getPersonasEnGrupo,
     addGrupo
 }

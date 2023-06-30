@@ -2,32 +2,32 @@ import { getConnection } from "../db/database";
 import { upload } from "../middleware/multer"
 
 const getDesaparecidos = async (req, res) => {
-    /* try {
+    try {
         const connection = await getConnection();
-        const result = await connection.query("SELECT * FROM interacciones");
+        const result = await connection.query("SELECT * FROM desaparecidos");
 
         res.json(result);
     } catch (error) {
         res.status(500);
         res.send(error.message);
-    } */
+    }
 }
 
 const getDesaparecidosId = async (req, res) => {
-    /* try {
+    try {
         const { id } = req.params;
         const connection = await getConnection();
-        const result = await connection.query("SELECT * FROM interacciones WHERE IdInteraccion = ?", id);
+        const result = await connection.query("SELECT * FROM desaparecidos WHERE IdDesaparecido = ?", id);
 
         res.json(result);
     } catch (error) {
         res.status(500);
         res.send(error.message);
-    } */
+    }
 }
 
 const getDesaparecidosPorCampo = async (req, res) => {
-    /* try {
+    try {
         const { campo, valor } = req.params;
 
         if (campo === undefined || valor === undefined) {
@@ -35,45 +35,230 @@ const getDesaparecidosPorCampo = async (req, res) => {
         }
 
         const connection = await getConnection();
-        const result = await connection.query("SELECT * FROM interacciones WHERE " + campo + " = '" + valor + "'");
+        const result = await connection.query("SELECT * FROM desaparecidos WHERE " + campo + " = '" + valor + "'");
 
         res.json(result);
     } catch (error) {
         res.status(500);
         res.send(error.message);
-    } */
+    }
 }
 
 const addDesaparecidos = async (req, res) => {
-    /* try {
-        const { Nombre, ApellidoPaterno, ApellidoMaterno, NombreSocial, FechaNacimiento, Sexo, Nacionalidad, Estado, Municipio, LugarFrecuenta, LugarActual, SituacionCalle, MigrantesMexicanas, TrabajadorCampo, DesplazadasForzadasInternas, MigrantesExtranjeras, Deportadas, TrabajadorHogar, DescripcionFisica, Necesidades, MensajeFamiliares, Imagen, SaludFisica, SaludMental, Observaciones, Folio, IdGrupo } = req.body;
+    try {
+        const {
+            FolioInstitucion,
+            FolioRNPDNO,
+            FechaEntrevista,
+            Nombre,
+            ApellidoPaterno,
+            ApellidoMaterno,
+            NombreSocial,
+            Alias,
+            NacionalidadAlias,
+            Sexo,
+            FechaNacimiento,
+            Nacionalidad,
+            EstadoCivil,
+            ViajaConIdentificacion,
+            ViajaConIdentificacionCual,
+            UltimoDomicilio,
+            IdiomaMaterno,
+            HablaEspañol,
+            OtrosIdiomas,
+            OtrosIdiomasCual,
+            PuebloOriginario,
+            PuebloOriginarioCual,
+            Afrodescendiente,
+            IdiomaPadresAbuelos,
+            IdiomaPadresAbuelosCual,
+            SexoIdentifica,
+            OrientacionSexual,
+            OrientacionSexualCual,
+            Profesion,
+            EdadMigracion,
+            AñoComienzoMigracion,
+            MotivoMigracion,
+            NumeroMigraciones,
+            RelatoDesaparicion,
+            PaisPerdidaContacto,
+            PaisPerdidaContactoCual,
+            MunicipioPerdidaContacto,
+            LugarCrucePretendia,
+            LugarCruceConfirmado,
+            PaisObjetivo,
+            EstadoObjetivo,
+            MunicipioObjetivo,
+            FechaUltimaComunicacion,
+            PersonaUltimaComunicacion,
+            DeportadaAnteriormente,
+            PaisDeportacion,
+            FechaUltimaDeportacion,
+            Encarcelado,
+            UbicacionCarcel,
+            FechaDetencion,
+            IdentificacionDetencionEEUU,
+            PapelesFalsos,
+            PapelesFalsosCual,
+            AcompañantesViaje,
+            ConocidosEnExtranjero,
+            Estatura,
+            Peso,
+            Complexion,
+            ColorPiel,
+            VelloFacial,
+            VelloFacialCual,
+            Lentes,
+            Cabello,
+            Embarazada,
+            MesesEmbarazo,
+            NumeroCelular,
+            SeñalesParticulares,
+            Lesiones,
+            TipoDientes,
+            EstadoSalud,
+            DescripcionPrendas,
+            RedesSociales,
+            HayDenuncia,
+            HayDenunciaCual,
+            HayReporte,
+            HayReporteCual,
+            AvancesDenuncia,
+            AvancesDenunciaCual,
+            LugaresBusqueda,
+            NombreQuienBusca,
+            ApellidoPaternoQuienBusca,
+            ApellidoMaternoQuienBusca,
+            ParentescoQuienBusca,
+            DireccionQuienBusca,
+            TelefonoQuienBusca,
+            CorreoElectronicoQuienBusca,
+            MensajeQuienBusca,
+            InformacionUsadaPara,
+            InformacionPublica,
+            Entrevistador,
+            Institucion,
+            Cargo
+        } = req.body;
+
         const imangenFile = req.file;
+        var Imagen = "";
 
-        if (imangenFile != undefined) {
-            
+        if(imangenFile != undefined){
+            Imagen = req.file.path;
         }
-
-        if (Nombre === undefined || ApellidoPaterno === undefined || ApellidoMaterno === undefined || NombreSocial === undefined || FechaNacimiento === undefined || Sexo === undefined || Nacionalidad === undefined || Estado === undefined || Municipio === undefined || LugarFrecuenta === undefined || LugarActual === undefined || SituacionCalle === undefined || MigrantesMexicanas === undefined || TrabajadorCampo === undefined || DesplazadasForzadasInternas === undefined || MigrantesExtranjeras === undefined || Deportadas === undefined || TrabajadorHogar === undefined || DescripcionFisica === undefined || Necesidades === undefined || MensajeFamiliares === undefined || Necesidades === undefined || Imagen === undefined || SaludFisica === undefined || SaludMental === undefined || Observaciones === undefined || Folio === undefined || IdGrupo === undefined) {
+        
+        if(Nombre === undefined || ApellidoPaterno === undefined || ApellidoMaterno === undefined || FechaNacimiento === undefined || Nacionalidad === undefined || InformacionUsadaPara === undefined || InformacionPublica === undefined || Institucion === undefined){
             res.status(400).json({ message: "Bad request" });
         }
 
-        const interaccion = {
-            Nombre, ApellidoPaterno, ApellidoMaterno, NombreSocial, FechaNacimiento, Sexo, Nacionalidad, Estado, Municipio, LugarFrecuenta, LugarActual, SituacionCalle, MigrantesMexicanas, TrabajadorCampo, DesplazadasForzadasInternas, MigrantesExtranjeras, Deportadas, TrabajadorHogar, DescripcionFisica, Necesidades, MensajeFamiliares, Imagen, SaludFisica, SaludMental, Observaciones, Folio
+        const desaparecido = {
+            FolioInstitucion,
+            FolioRNPDNO,
+            FechaEntrevista,
+            Nombre,
+            ApellidoPaterno,
+            ApellidoMaterno,
+            NombreSocial,
+            Alias,
+            NacionalidadAlias,
+            Sexo,
+            FechaNacimiento,
+            Nacionalidad,
+            EstadoCivil,
+            ViajaConIdentificacion,
+            ViajaConIdentificacionCual,
+            UltimoDomicilio,
+            IdiomaMaterno,
+            HablaEspañol,
+            OtrosIdiomas,
+            OtrosIdiomasCual,
+            PuebloOriginario,
+            PuebloOriginarioCual,
+            Afrodescendiente,
+            IdiomaPadresAbuelos,
+            IdiomaPadresAbuelosCual,
+            SexoIdentifica,
+            OrientacionSexual,
+            OrientacionSexualCual,
+            Profesion,
+            EdadMigracion,
+            AñoComienzoMigracion,
+            MotivoMigracion,
+            NumeroMigraciones,
+            RelatoDesaparicion,
+            PaisPerdidaContacto,
+            PaisPerdidaContactoCual,
+            MunicipioPerdidaContacto,
+            LugarCrucePretendia,
+            LugarCruceConfirmado,
+            PaisObjetivo,
+            EstadoObjetivo,
+            MunicipioObjetivo,
+            FechaUltimaComunicacion,
+            PersonaUltimaComunicacion,
+            DeportadaAnteriormente,
+            PaisDeportacion,
+            FechaUltimaDeportacion,
+            Encarcelado,
+            UbicacionCarcel,
+            FechaDetencion,
+            IdentificacionDetencionEEUU,
+            PapelesFalsos,
+            PapelesFalsosCual,
+            AcompañantesViaje,
+            ConocidosEnExtranjero,
+            Estatura,
+            Peso,
+            Complexion,
+            ColorPiel,
+            VelloFacial,
+            VelloFacialCual,
+            Lentes,
+            Cabello,
+            Embarazada,
+            MesesEmbarazo,
+            NumeroCelular,
+            SeñalesParticulares,
+            Lesiones,
+            TipoDientes,
+            EstadoSalud,
+            DescripcionPrendas,
+            RedesSociales,
+            Imagen,
+            HayDenuncia,
+            HayDenunciaCual,
+            HayReporte,
+            HayReporteCual,
+            AvancesDenuncia,
+            AvancesDenunciaCual,
+            LugaresBusqueda,
+            NombreQuienBusca,
+            ApellidoPaternoQuienBusca,
+            ApellidoMaternoQuienBusca,
+            ParentescoQuienBusca,
+            DireccionQuienBusca,
+            TelefonoQuienBusca,
+            CorreoElectronicoQuienBusca,
+            MensajeQuienBusca,
+            InformacionUsadaPara,
+            InformacionPublica,
+            Entrevistador,
+            Institucion,
+            Cargo
         }
 
         const connection = await getConnection();
 
-        const result = await connection.query("INSERT INTO interacciones SET ?", interaccion);
+        const result = await connection.query("INSERT INTO desaparecidos SET ?", desaparecido);
 
-        if (IdGrupo != "Sin grupo") {
-            // Añadir la interaccion al grupo que pertenece
-        }
+        console.log(result)
 
-        res.json({ message: "Interacción añadida" });
+        res.json({ message: "Persona desaparecida añadida" });
     } catch (error) {
         res.status(500);
         res.send(error.message);
-    } */
+    }
 }
 
 const deleteDesaparecidosId = async (req, res) => {
