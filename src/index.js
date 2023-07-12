@@ -1,6 +1,6 @@
 import app from "./app";
-const https = require("https");
-const fs = require("fs");
+/* const https = require("https");
+const fs = require("fs"); */
 
 /* const main = () => {
 
@@ -13,6 +13,7 @@ const fs = require("fs");
         listen(app.get("port"), () => console.log(`Server on port ${app.get("port")}`))
 } */
 
+// Función que lanza la aplicacion
 const main = () => {
     app.listen(app.get("port"));
     console.log(`Server on port ${app.get("port")}`);

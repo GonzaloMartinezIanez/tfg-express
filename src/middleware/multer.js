@@ -1,6 +1,10 @@
 const path = require('path')
-
 const multer = require('multer')
+
+/**
+ * Middleware para guardar en la carpeta "uploads" el fichero
+ * que se envia en la peticion
+ */
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, './uploads/')

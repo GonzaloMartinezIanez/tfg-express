@@ -1,18 +1,35 @@
 import { getConnection } from "../db/database";
 import { upload } from "../middleware/multer"
 
+/**
+ * Funcion para obtener los registros de personas desaparecidas,
+ * solo se obtienen aquellos registros realizados por un
+ * entrevistador de la misma intitucion
+ */
 const getDesaparecidos = async (req, res) => {
     try {
         const connection = await getConnection();
-        const result = await connection.query("SELECT * FROM desaparecidos");
+        if (req.IdEntrevistador == 1) {
+            const result = await connection.query("SELECT * FROM desaparecidos");
 
-        res.json(result);
+            res.json(result);
+        } else {
+            const institucion = await connection.query("SELECT Institucion FROM entrevistadores WHERE IdEntrevistador = ?", req.IdEntrevistador)
+            const result = await connection.query("SELECT * FROM desaparecidos d, entrevistadorescorto e WHERE d.IdEntrevistador = e.IdEntrevistador AND e.Institucion = ?", institucion[0].Institucion);
+            res.json(result);
+        }
+
+
+
     } catch (error) {
         res.status(500);
         res.send(error.message);
     }
 }
 
+/**
+ * Funcion para obtener un desaparecido a partir del folio
+ */
 const getDesaparecidosId = async (req, res) => {
     try {
         const { id } = req.params;
@@ -26,10 +43,14 @@ const getDesaparecidosId = async (req, res) => {
     }
 }
 
+/**
+ * Funcion para obtener todos los registros que cumplan con una condicion
+ */
 const getDesaparecidosPorCampo = async (req, res) => {
     try {
         const { campo, valor } = req.params;
 
+        // Comprobar que se han enviado los datos correctamente
         if (campo === undefined || valor === undefined) {
             res.status(400).json({ message: "Bad request" });
         }
@@ -44,6 +65,9 @@ const getDesaparecidosPorCampo = async (req, res) => {
     }
 }
 
+/**
+ * Funcion para añadir un registro de persona desaparecida al sistema
+ */
 const addDesaparecidos = async (req, res) => {
     try {
         const {
@@ -141,14 +165,18 @@ const addDesaparecidos = async (req, res) => {
             Cargo
         } = req.body;
 
+        var IdEntrevistador = req.IdEntrevistador;
         const imangenFile = req.file;
         var Imagen = "";
 
-        if(imangenFile != undefined){
+        // En el caso de que el middleware de multer haya encontrado
+        // una imagen, se guardara la ruta en la base de datos
+        if (imangenFile != undefined) {
             Imagen = req.file.path;
         }
-        
-        if(Nombre === undefined || ApellidoPaterno === undefined || ApellidoMaterno === undefined || FechaNacimiento === undefined || Nacionalidad === undefined || InformacionUsadaPara === undefined || InformacionPublica === undefined || Institucion === undefined){
+
+        // Comprobar que se han enviado los datos correctamente
+        if (Nombre === undefined || ApellidoPaterno === undefined || ApellidoMaterno === undefined || FechaNacimiento === undefined || Nacionalidad === undefined || InformacionUsadaPara === undefined || InformacionPublica === undefined || Institucion === undefined) {
             res.status(400).json({ message: "Bad request" });
         }
 
@@ -245,14 +273,12 @@ const addDesaparecidos = async (req, res) => {
             InformacionPublica,
             Entrevistador,
             Institucion,
-            Cargo
+            Cargo,
+            IdEntrevistador
         }
 
         const connection = await getConnection();
-
         const result = await connection.query("INSERT INTO desaparecidos SET ?", desaparecido);
-
-        console.log(result)
 
         res.json({ message: "Persona desaparecida añadida" });
     } catch (error) {
@@ -261,8 +287,8 @@ const addDesaparecidos = async (req, res) => {
     }
 }
 
-const deleteDesaparecidosId = async (req, res) => {
-    /* try {
+/* const deleteDesaparecidosId = async (req, res) => {
+    try {
         const { id } = req.params;
         const connection = await getConnection();
         const result = await connection.query("DELETE FROM interacciones WHERE IdInteraccion = ?", id);
@@ -271,38 +297,13 @@ const deleteDesaparecidosId = async (req, res) => {
     } catch (error) {
         res.status(500);
         res.send(error.message);
-    } */
-}
-
-const updateDesaparecidosId = async (req, res) => {
-    /* try {
-        const { id } = req.params;
-        const { Nombre, ApellidoPaterno, ApellidoMaterno, NombreSocial, FechaNacimiento, Sexo, Nacionalidad, Estado, Municipio, LugarFrecuenta, LugarActual, SituacionCalle, MigrantesMexicanas, TrabajadorCampo, DeplazadasForzadasInternas, MigrantesExtranjeras, Deportadas, TrabajadorHogar, DescripcionFisica, Necesidades, MensajeFamiliares, Imagen, SaludFisica, SaludMental, Observaciones, Folio } = req.body;
-
-        if (id === undefined) {
-            res.status(400).json({ message: "Bad request" });
-        }
-
-        const interaccion = {
-            Nombre, ApellidoPaterno, ApellidoMaterno, NombreSocial, FechaNacimiento, Sexo, Nacionalidad, Estado, Municipio, LugarFrecuenta, LugarActual, SituacionCalle, MigrantesMexicanas, TrabajadorCampo, DeplazadasForzadasInternas, MigrantesExtranjeras, Deportadas, TrabajadorHogar, DescripcionFisica, Necesidades, MensajeFamiliares, Imagen, SaludFisica, SaludMental, Observaciones, Folio
-        }
-
-        const connection = await getConnection();
-        const result = await connection.query("UPDATE interacciones SET ? WHERE IdInteraccion = ?", [interaccion, id]);
-
-        res.json("Interaccion actualizada");
-    } catch (error) {
-        res.status(500);
-        res.send(error.message);
-    } */
-}
+    }
+} */
 
 
 export const methods = {
     getDesaparecidos,
     getDesaparecidosId,
     getDesaparecidosPorCampo,
-    addDesaparecidos,
-    deleteDesaparecidosId,
-    updateDesaparecidosId
+    addDesaparecidos
 }

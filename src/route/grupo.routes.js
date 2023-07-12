@@ -1,14 +1,14 @@
 import { Router } from "express";
 import { methods as grupoController } from "./../controller/grupo.controller";
-import { methods as authController } from "./../controller/auth.controller"
+import { methods as auth } from "./../middleware/verificacion"
 
 const router = Router();
 
-router.get("/api/grupo", authController.verifyToken, grupoController.getGrupo);
-router.get("/api/grupo/:id", authController.verifyToken, grupoController.getGrupoId);
-router.get("/api/grupointeraccion/:id", authController.verifyToken, grupoController.getGrupoInteraccionId);
-router.get("/api/grupocorto", authController.verifyToken, grupoController.getGrupoCorto);
-router.get("/api/grupopersonas/:id", authController.verifyToken, grupoController.getPersonasEnGrupo);
-router.post("/api/grupo", authController.verifyToken, grupoController.addGrupo);
+router.get("/api/grupo", auth.verifyToken, grupoController.getGrupo);
+router.get("/api/grupo/:id", auth.verifyToken, grupoController.getGrupoId);
+router.get("/api/grupointeraccion/:id", auth.verifyToken, grupoController.getGrupoInteraccionId);
+router.get("/api/grupocorto", auth.verifyToken, grupoController.getGrupoCorto);
+router.get("/api/grupopersonas/:id", auth.verifyToken, grupoController.getPersonasEnGrupo);
+router.post("/api/grupo", auth.verifyToken, grupoController.addGrupo);
 
 export default router;

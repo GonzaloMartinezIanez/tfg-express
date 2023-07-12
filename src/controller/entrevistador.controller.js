@@ -1,5 +1,9 @@
 import { getConnection } from "./../db/database";
 
+/**
+ * Funcion para obtener la informacion del entrevisador
+ * que realiza la peticion
+ */
 const getEntrevistador = async (req, res) => {
     try {
         const connection = await getConnection();
@@ -12,7 +16,11 @@ const getEntrevistador = async (req, res) => {
     }
 }
 
-const addEntrevistador = async (req, res) => {
+/**
+ * Funcion para añadir un entrevistador al sistema
+ * Faltan los campos de usuario y contraseña
+ */
+/* const addEntrevistador = async (req, res) => {
     try {
         const { Nombre, ApellidoPaterno, ApellidoMaterno, Institucion, Cargo, LugarActual } = req.body;
 
@@ -33,24 +41,31 @@ const addEntrevistador = async (req, res) => {
         res.status(500);
         res.send(error.message);
     }
-}
+} */
 
-const deleteEntrevistador = async (req, res) => {
+/**
+ * Funcion para eliminar un entrevistador
+ */
+/* const deleteEntrevistador = async (req, res) => {
     try {
         const connection = await getConnection();
-        const result = await connection.query("DELETE FROM entrevistadores WHERE idEntrevistador = ?", req.IdEntrevistador);
+        const result = await connection.query("DELETE FROM entrevistadores WHERE IdEntrevistador = ?", req.IdEntrevistador);
 
         res.json(result);
     } catch (error) {
         res.status(500);
         res.send(error.message);
     }
-}
+} */
 
+/**
+ * Funcion para actulizar los campos de un entrevistaodr
+ */
 const updateEntrevistador = async (req, res) => {
     try {
         const { Nombre, ApellidoPaterno, ApellidoMaterno, Institucion, Cargo, LugarActual } = req.body;
 
+        // Comprobar que se han enviado los datos correctamente
         if (Nombre === undefined || ApellidoPaterno === undefined || ApellidoMaterno === undefined || Institucion === undefined || Cargo === undefined || LugarActual === undefined) {
             res.status(400).json({ message: "Bad request" });
         }
@@ -60,7 +75,6 @@ const updateEntrevistador = async (req, res) => {
         }
 
         const connection = await getConnection();
-
         const result = await connection.query("UPDATE entrevistadores SET ? WHERE idEntrevistador = ?", [entrevistador, req.IdEntrevistador]);
 
         res.json("Entrevistador actualizado");
@@ -72,7 +86,5 @@ const updateEntrevistador = async (req, res) => {
 
 export const methods = {
     getEntrevistador,
-    addEntrevistador,
-    deleteEntrevistador,
     updateEntrevistador
 }
