@@ -6,8 +6,9 @@ import { methods  as multerMethods } from "./../middleware/multer"
 const router = Router();
 
 router.get("/api/interaccion", auth.verifyToken, interaccionController.getInteraccion);
-router.get("/api/interaccion/:id", auth.verifyToken, interaccionController.getInteraccionId);
-router.get("/api/interaccionPorCampo/:campo/:valor", auth.verifyToken, interaccionController.getInteraccionPorCampo);
+router.get("/api/interaccionCorto/:id", auth.verifyToken, interaccionController.getInteraccionCortoId);
+router.get("/api/interaccionesPorNombre/:Nombre/:ApellidoPaterno/:ApellidoMaterno", auth.verifyToken, interaccionController.getInteraccionPorNombre);
+router.post("/api/interaccionPorCampo/", auth.verifyToken, interaccionController.getInteraccionPorCampo);
 router.post("/api/interaccion", [auth.verifyToken, multerMethods.upload.single('Imagen')], interaccionController.addInteraccion);
 //router.delete("/api/interaccion/:id", auth.verifyToken, interaccionController.deleteInteraccionId);
 router.put("/api/interaccion/", auth.verifyToken, interaccionController.updateInteraccion);

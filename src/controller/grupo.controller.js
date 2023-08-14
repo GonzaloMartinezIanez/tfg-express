@@ -10,7 +10,7 @@ const getGrupo = async (req, res) => {
         const connection = await getConnection();
         
         // El entrevistador es el administrador
-        if (req.IdEntrevistador == 1) {
+        if (req.cargo == "ADMINISTRADOR") {
             const result = await connection.query("SELECT * FROM grupos");
             res.json(result);
         } else {
@@ -107,16 +107,16 @@ const getPersonasEnGrupo = async (req, res) => {
  */
 const addGrupo = async (req, res) => {
     try {
-        const { NombreGrupo, FechaCreacion, NombreEncargado, LugarCreacion } = req.body;
+        const { NombreGrupo, FechaCreacion, NombreEncargado, LugarCreacion, LugarCreacionCoordenadas } = req.body;
         var IdEntrevistador = req.IdEntrevistador;
 
         // Comprobar que se han enviado los datos correctamente
-        if (NombreGrupo === undefined || FechaCreacion === undefined || NombreEncargado === undefined || LugarCreacion === undefined) {
+        if (NombreGrupo === undefined || FechaCreacion === undefined || NombreEncargado === undefined || LugarCreacion === undefined || LugarCreacionCoordenadas === undefined) {
             res.status(400).json({ message: "Bad request" });
         }
 
         const grupo = {
-            NombreGrupo, FechaCreacion, NombreEncargado, LugarCreacion, IdEntrevistador
+            NombreGrupo, FechaCreacion, NombreEncargado, LugarCreacion, LugarCreacionCoordenadas, IdEntrevistador
         }
 
         const connection = await getConnection();

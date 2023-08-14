@@ -3,12 +3,14 @@ import morgan from "morgan";
 const cors = require('cors');
 var bodyParser = require('body-parser');
 
-import entrevistadorRoutes from "./route/entrevistador.routes.js";
-import grupoRoutes from "./route/grupo.routes.js"
-import interaccionRoutes from "./route/interaccion.routes.js"
-import desaparecidosRoutes from "./route/desaparecidos.routes.js"
-import authRoutes from "./route/auth.routes.js"
-import nacionesRoutes from "./route/naciones.routes.js"
+import entrevistadorRoutes from "./route/entrevistador.routes";
+import grupoRoutes from "./route/grupo.routes"
+import interaccionRoutes from "./route/interaccion.routes"
+import desaparecidosRoutes from "./route/desaparecidos.routes"
+import authRoutes from "./route/auth.routes"
+import nacionesRoutes from "./route/naciones.routes"
+
+import { methods as auth } from "./middleware/verificacion"
 
 const app = express();
 
@@ -16,7 +18,7 @@ const app = express();
 app.set("port", 3000);
 
 // Middelwares
-app.use(morgan("dev"));
+app.use(morgan("dev"));     // Con este middleware se ven las peticiones
 app.use(express.json());
 app.use(cors());
 
@@ -27,6 +29,9 @@ app.use(interaccionRoutes);
 app.use(desaparecidosRoutes);
 app.use(authRoutes);
 app.use(nacionesRoutes);
+
+// Enviar las imagenes de la base de datos
+app.use('/api/imagen', /* auth.verifyToken, */ express.static('./uploads/'))
 
 // Ignorar el resto de peticiones
 app.get("*", (req, res) => {

@@ -9,7 +9,7 @@ import { upload } from "../middleware/multer"
 const getDesaparecidos = async (req, res) => {
     try {
         const connection = await getConnection();
-        if (req.IdEntrevistador == 1) {
+        if (req.cargo == "ADMINISTRADOR") {
             const result = await connection.query("SELECT * FROM desaparecidos");
 
             res.json(result);
@@ -18,9 +18,6 @@ const getDesaparecidos = async (req, res) => {
             const result = await connection.query("SELECT * FROM desaparecidos d, entrevistadorescorto e WHERE d.IdEntrevistador = e.IdEntrevistador AND e.Institucion = ?", institucion[0].Institucion);
             res.json(result);
         }
-
-
-
     } catch (error) {
         res.status(500);
         res.send(error.message);
@@ -169,118 +166,124 @@ const addDesaparecidos = async (req, res) => {
         const imangenFile = req.file;
         var Imagen = "";
 
-        // En el caso de que el middleware de multer haya encontrado
-        // una imagen, se guardara la ruta en la base de datos
-        if (imangenFile != undefined) {
-            Imagen = req.file.path;
-        }
-
-        // Comprobar que se han enviado los datos correctamente
-        if (Nombre === undefined || ApellidoPaterno === undefined || ApellidoMaterno === undefined || FechaNacimiento === undefined || Nacionalidad === undefined || InformacionUsadaPara === undefined || InformacionPublica === undefined || Institucion === undefined) {
-            res.status(400).json({ message: "Bad request" });
-        }
-
-        const desaparecido = {
-            FolioInstitucion,
-            FolioRNPDNO,
-            FechaEntrevista,
-            Nombre,
-            ApellidoPaterno,
-            ApellidoMaterno,
-            NombreSocial,
-            Alias,
-            NacionalidadAlias,
-            Sexo,
-            FechaNacimiento,
-            Nacionalidad,
-            EstadoCivil,
-            ViajaConIdentificacion,
-            ViajaConIdentificacionCual,
-            UltimoDomicilio,
-            IdiomaMaterno,
-            HablaEspañol,
-            OtrosIdiomas,
-            OtrosIdiomasCual,
-            PuebloOriginario,
-            PuebloOriginarioCual,
-            Afrodescendiente,
-            IdiomaPadresAbuelos,
-            IdiomaPadresAbuelosCual,
-            SexoIdentifica,
-            OrientacionSexual,
-            OrientacionSexualCual,
-            Profesion,
-            EdadMigracion,
-            AñoComienzoMigracion,
-            MotivoMigracion,
-            NumeroMigraciones,
-            RelatoDesaparicion,
-            PaisPerdidaContacto,
-            PaisPerdidaContactoCual,
-            MunicipioPerdidaContacto,
-            LugarCrucePretendia,
-            LugarCruceConfirmado,
-            PaisObjetivo,
-            EstadoObjetivo,
-            MunicipioObjetivo,
-            FechaUltimaComunicacion,
-            PersonaUltimaComunicacion,
-            DeportadaAnteriormente,
-            PaisDeportacion,
-            FechaUltimaDeportacion,
-            Encarcelado,
-            UbicacionCarcel,
-            FechaDetencion,
-            IdentificacionDetencionEEUU,
-            PapelesFalsos,
-            PapelesFalsosCual,
-            AcompañantesViaje,
-            ConocidosEnExtranjero,
-            Estatura,
-            Peso,
-            Complexion,
-            ColorPiel,
-            VelloFacial,
-            VelloFacialCual,
-            Lentes,
-            Cabello,
-            Embarazada,
-            MesesEmbarazo,
-            NumeroCelular,
-            SeñalesParticulares,
-            Lesiones,
-            TipoDientes,
-            EstadoSalud,
-            DescripcionPrendas,
-            RedesSociales,
-            Imagen,
-            HayDenuncia,
-            HayDenunciaCual,
-            HayReporte,
-            HayReporteCual,
-            AvancesDenuncia,
-            AvancesDenunciaCual,
-            LugaresBusqueda,
-            NombreQuienBusca,
-            ApellidoPaternoQuienBusca,
-            ApellidoMaternoQuienBusca,
-            ParentescoQuienBusca,
-            DireccionQuienBusca,
-            TelefonoQuienBusca,
-            CorreoElectronicoQuienBusca,
-            MensajeQuienBusca,
-            InformacionUsadaPara,
-            InformacionPublica,
-            Entrevistador,
-            Institucion,
-            Cargo,
-            IdEntrevistador
-        }
-
         const connection = await getConnection();
-        const result = await connection.query("INSERT INTO desaparecidos SET ?", desaparecido);
+        const existe = await connection.query("SELECT IdDesaparecido FROM desaparecidos WHERE Nombre = '" + Nombre + "' AND ApellidoPaterno = '" + ApellidoPaterno + "' AND ApellidoMaterno = '" + ApellidoMaterno + "' AND FechaNacimiento = '" + FechaNacimiento + "';");
 
-        res.json({ message: "Persona desaparecida añadida" });
+        if (existe.length != 0) {
+            res.json({ message: "La persona ya esta registrada", folio: existe[0].IdDesaparecido });
+        } else {
+            // En el caso de que el middleware de multer haya encontrado
+            // una imagen, se guardara la ruta en la base de datos
+            if (imangenFile != undefined) {
+                Imagen = req.file.path.split("uploads\\")[1];
+            }
+
+            // Comprobar que se han enviado los datos correctamente
+            if (Nombre === undefined || ApellidoPaterno === undefined || ApellidoMaterno === undefined || FechaNacimiento === undefined || Nacionalidad === undefined || InformacionUsadaPara === undefined || InformacionPublica === undefined || Institucion === undefined) {
+                res.status(400).json({ message: "Bad request" });
+            }
+
+            const desaparecido = {
+                FolioInstitucion,
+                FolioRNPDNO,
+                FechaEntrevista,
+                Nombre,
+                ApellidoPaterno,
+                ApellidoMaterno,
+                NombreSocial,
+                Alias,
+                NacionalidadAlias,
+                Sexo,
+                FechaNacimiento,
+                Nacionalidad,
+                EstadoCivil,
+                ViajaConIdentificacion,
+                ViajaConIdentificacionCual,
+                UltimoDomicilio,
+                IdiomaMaterno,
+                HablaEspañol,
+                OtrosIdiomas,
+                OtrosIdiomasCual,
+                PuebloOriginario,
+                PuebloOriginarioCual,
+                Afrodescendiente,
+                IdiomaPadresAbuelos,
+                IdiomaPadresAbuelosCual,
+                SexoIdentifica,
+                OrientacionSexual,
+                OrientacionSexualCual,
+                Profesion,
+                EdadMigracion,
+                AñoComienzoMigracion,
+                MotivoMigracion,
+                NumeroMigraciones,
+                RelatoDesaparicion,
+                PaisPerdidaContacto,
+                PaisPerdidaContactoCual,
+                MunicipioPerdidaContacto,
+                LugarCrucePretendia,
+                LugarCruceConfirmado,
+                PaisObjetivo,
+                EstadoObjetivo,
+                MunicipioObjetivo,
+                FechaUltimaComunicacion,
+                PersonaUltimaComunicacion,
+                DeportadaAnteriormente,
+                PaisDeportacion,
+                FechaUltimaDeportacion,
+                Encarcelado,
+                UbicacionCarcel,
+                FechaDetencion,
+                IdentificacionDetencionEEUU,
+                PapelesFalsos,
+                PapelesFalsosCual,
+                AcompañantesViaje,
+                ConocidosEnExtranjero,
+                Estatura,
+                Peso,
+                Complexion,
+                ColorPiel,
+                VelloFacial,
+                VelloFacialCual,
+                Lentes,
+                Cabello,
+                Embarazada,
+                MesesEmbarazo,
+                NumeroCelular,
+                SeñalesParticulares,
+                Lesiones,
+                TipoDientes,
+                EstadoSalud,
+                DescripcionPrendas,
+                RedesSociales,
+                Imagen,
+                HayDenuncia,
+                HayDenunciaCual,
+                HayReporte,
+                HayReporteCual,
+                AvancesDenuncia,
+                AvancesDenunciaCual,
+                LugaresBusqueda,
+                NombreQuienBusca,
+                ApellidoPaternoQuienBusca,
+                ApellidoMaternoQuienBusca,
+                ParentescoQuienBusca,
+                DireccionQuienBusca,
+                TelefonoQuienBusca,
+                CorreoElectronicoQuienBusca,
+                MensajeQuienBusca,
+                InformacionUsadaPara,
+                InformacionPublica,
+                Entrevistador,
+                Institucion,
+                Cargo,
+                IdEntrevistador
+            }
+
+            const result = await connection.query("INSERT INTO desaparecidos SET ?", desaparecido);
+
+            res.json({ message: "Persona desaparecida añadida" });
+        }
     } catch (error) {
         res.status(500);
         res.send(error.message);

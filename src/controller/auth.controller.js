@@ -29,7 +29,8 @@ const login = async (req, res) => {
                 res.status(401).json({ message: "Usuario o contraseña incorrecta" });
             } else {
                 // Crear el token del usuario
-                const token = jwt.sign({ id: results[0].IdEntrevistador }, 'fif29f3uf34b');
+                const token = jwt.sign(
+                    { id: results[0].IdEntrevistador }, 'fif29f3uf34b');
 
                 res.status(200).json({ token });
             }
@@ -40,6 +41,22 @@ const login = async (req, res) => {
     }
 }
 
+const administrador = async (req, res) => {
+    try {
+        var IdEntrevistador = req.IdEntrevistador;
+
+        if (IdEntrevistador == 1) {
+            res.json({ message: "Es admin" });
+        } else {
+            res.json({ message: "No es admin" });
+        }
+    } catch (error) {
+        res.status(500);
+        res.send(error.message);
+    }
+}
+
 export const methods = {
-    login
+    login,
+    administrador
 }

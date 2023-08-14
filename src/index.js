@@ -1,9 +1,9 @@
 import app from "./app";
-/* const https = require("https");
-const fs = require("fs"); */
+const https = require("https");
+const fs = require("fs");
 
+// Hay que generar un certificado válido
 /* const main = () => {
-
     https.createServer(
         {
             key: fs.readFileSync("./src/key/key.pem"),
