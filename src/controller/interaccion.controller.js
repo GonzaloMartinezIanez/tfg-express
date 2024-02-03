@@ -220,6 +220,7 @@ const addInteraccion = async (req, res) => {
 const updateInteraccion = async (req, res) => {
     try {
         const { IdInteraccion, Interacciones } = req.body;
+        console.log(req.body)
 
         // Comprobar que se han enviado los datos correctamente
         if (IdInteraccion === undefined || Interacciones === undefined) {

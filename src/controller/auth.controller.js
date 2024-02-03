@@ -56,7 +56,36 @@ const administrador = async (req, res) => {
     }
 }
 
+const getCargo = async (req, res) => {
+    try {
+        const connection = await getConnection();
+        const result = await connection.query("SELECT Cargo FROM entrevistadores WHERE IdEntrevistador = ?", req.IdEntrevistador);
+
+        res.json(result)
+    } catch (error) {
+        res.status(500);
+        res.send(error.message);
+    }
+}
+
+const getEntrevistadorNombre = async (req, res) => {
+    try {
+
+        const { id } = req.params;
+
+        const connection = await getConnection();
+        const result = await connection.query("SELECT Nombre, ApellidoPaterno, ApellidoMaterno FROM entrevistadores WHERE IdEntrevistador = ?", id);
+
+        res.json(result);
+    } catch (error) {
+        res.status(500);
+        res.send(error.message);
+    }
+}
+
+
 export const methods = {
     login,
-    administrador
+    administrador,
+    getCargo
 }

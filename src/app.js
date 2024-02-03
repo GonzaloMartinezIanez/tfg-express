@@ -31,10 +31,10 @@ app.use(authRoutes);
 app.use(nacionesRoutes);
 
 // Enviar las imagenes de la base de datos
-app.use('/api/imagen', /* auth.verifyToken, */ express.static('./uploads/'))
+app.use('/api/imagen', express.static('./uploads/'))
 
 // Ignorar el resto de peticiones
-app.get("*", (req, res) => {
+app.all("*", (req, res) => {
     res.status(500);
     res.send("Error");
 })

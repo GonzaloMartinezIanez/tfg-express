@@ -231,6 +231,7 @@ export const methods = {
     getEntrevistador,
     getEntrevistadores,
     getEntrevistadorNombre,
+    addEntrevistador,
     updateEntrevistador,
     updateEntrevistadorAdministrador,
     registrar,

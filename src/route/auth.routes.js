@@ -6,5 +6,7 @@ const router = Router();
 
 router.post("/api/auth", authController.login);
 router.get("/api/administrador", auth.verifyToken, authController.administrador)
+router.get("/api/cargo", auth.verifyToken, authController.getCargo)
+
 
 export default router;

@@ -162,6 +162,7 @@ const addDesaparecidos = async (req, res) => {
             Cargo
         } = req.body;
 
+
         var IdEntrevistador = req.IdEntrevistador;
         const imangenFile = req.file;
         var Imagen = "";
@@ -280,7 +281,7 @@ const addDesaparecidos = async (req, res) => {
                 IdEntrevistador
             }
 
-            const result = await connection.query("INSERT INTO desaparecidos SET ?", desaparecido);
+            //const result = await connection.query("INSERT INTO desaparecidos SET ?", desaparecido);
 
             res.json({ message: "Persona desaparecida añadida" });
         }
